@@ -5,3 +5,4 @@ logs
 go.sum
 .vscode
 main.exe
+hmy-arco-pro/node_modules/
