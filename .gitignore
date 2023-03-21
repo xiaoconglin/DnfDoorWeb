@@ -1,0 +1,7 @@
+.idea
+vendor
+run.log
+logs
+go.sum
+.vscode
+main.exe
