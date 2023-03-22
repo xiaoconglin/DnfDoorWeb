@@ -6,12 +6,10 @@ go.sum
 .vscode
 main.exe
 proj_front/node_modules/
-proj_front/idea/
-proj_front/.eslintrc/
-proj_front/.eslintignore/
+proj_front/.idea/
 proj_front/yarn.lock/
 proj_front/package-lock.json
-proj_front/.env.*
+proj_front/.env.production
 # Binaries for programs and plugins
 *.exe
 *.exe~
