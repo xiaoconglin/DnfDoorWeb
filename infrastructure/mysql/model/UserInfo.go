@@ -6,7 +6,9 @@ import (
 
 type UserInfoPo struct {
 	ID             uint      `json:"id"`
-	Name           string    `json:"name"`
+	UserName       string    `json:"user_name"`
+	Password       string    `json:"password"`
+	NickName       string    `json:"nick_name"`
 	CreateDatetime time.Time `json:"create_time"`
 	UpdateDatetime time.Time `json:"update_time"`
 }

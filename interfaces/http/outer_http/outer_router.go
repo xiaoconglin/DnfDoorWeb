@@ -1,9 +1,10 @@
 package outer_http
 
 import (
-	"myweb/interfaces/http"
+	router_tool "myweb/tools"
 )
 
-var OuterUrlList = []http.RouterStruct{
+var OuterUrlList = []router_tool.RouterStruct{
+	{Method: "POST", Path: "/user/login", Handler: ApiUserLogin},
 	{Method: "POST", Path: "/user/info", Handler: ApiGetUserInfo},
 }
