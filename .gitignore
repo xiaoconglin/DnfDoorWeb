@@ -5,7 +5,7 @@ logs
 go.sum
 .vscode
 main.exe
-hmy-arco-pro/node_modules/
+proj_front/node_modules/
 # Binaries for programs and plugins
 *.exe
 *.exe~
