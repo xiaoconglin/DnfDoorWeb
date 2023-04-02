@@ -24,3 +24,8 @@ func UserLogin(inDto *dto_user.LoginInDto) (*dto_user.LoginOutDto, error) {
 	outDto.Token = token
 	return &outDto, nil
 }
+
+func CheckToken(tokenString string) (*user_entities.UserInfoDo, error) {
+	user, err := user_domain.UserServices.CheckToken(tokenString)
+	return user, err
+}

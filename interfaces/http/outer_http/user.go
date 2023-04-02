@@ -18,6 +18,39 @@ func ApiGetUserInfo(c *gin.Context) {
 			"name": user.NickName,
 		},
 	})
+	return
+}
+
+func ApiCheckToken(c *gin.Context) {
+	tokenString, ok := c.GetQuery("token")
+	if !ok {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "1",
+			"msg":  "缺失参数 token",
+			"data": nil,
+		})
+		c.Abort()
+		return
+	}
+	user, err := user_application.CheckToken(tokenString)
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"code": "1",
+			"msg":  errorToString(err),
+			"data": nil,
+		})
+		c.Abort()
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"status": "ok",
+		"msg":    "请求成功",
+		"code":   20000,
+		"data": map[string]any{
+			"name": user.NickName,
+		},
+	})
+	return
 }
 
 func ApiUserLogin(c *gin.Context) {
@@ -33,6 +66,7 @@ func ApiUserLogin(c *gin.Context) {
 			"data": nil,
 		})
 		c.Abort()
+		return
 	}
 	c.JSON(http.StatusOK, gin.H{
 		"status": "ok",
@@ -42,6 +76,7 @@ func ApiUserLogin(c *gin.Context) {
 			"token": outDto.Token,
 		},
 	})
+	return
 }
 
 // recover错误，转string
