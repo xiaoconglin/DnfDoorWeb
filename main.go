@@ -2,9 +2,9 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"myweb/interfaces/http/outer_http"
+	"myweb/apis/http_apis/outer_http"
 	"myweb/middlewares"
-	router_tool "myweb/tools"
+	router_tool "myweb/tools/router"
 )
 
 func main() {

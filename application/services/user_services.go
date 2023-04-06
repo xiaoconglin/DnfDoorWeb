@@ -1,31 +1,36 @@
 package user_application
 
 import (
+	user_dto "myweb/apis/dto"
 	user_assemblers "myweb/application/assemblers"
-	user_entities "myweb/domain/User/entities"
 	user_domain "myweb/domain/User/services"
-	dto_user "myweb/interfaces/dto"
 )
 
-func GetUserInfo(id uint) *user_entities.UserInfoDo {
+func GetUserInfo(id uint) *user_dto.UserInfoOutDto {
 	user := user_domain.UserServices.GetById(id)
-	return user
+	assemblers := user_assemblers.UserInfoInAssemblers{}
+	userDto := assemblers.DoToDto(user)
+	return userDto
 }
 
-func UserLogin(inDto *dto_user.LoginInDto) (*dto_user.LoginOutDto, error) {
+func UserLogin(inDto *user_dto.LoginInDto) (*user_dto.LoginOutDto, error) {
 	assemblers := user_assemblers.LoginInAssemblers{}
 	query := assemblers.DtoToQuery(inDto)
 	Token, err := user_domain.UserServices.Login(query)
 	if err != nil {
 		return nil, err
 	}
-	var outDto dto_user.LoginOutDto
+	var outDto user_dto.LoginOutDto
 	token, _ := Token.(string)
 	outDto.Token = token
 	return &outDto, nil
 }
-
-func CheckToken(tokenString string) (*user_entities.UserInfoDo, error) {
+func CheckToken(tokenString string) (*user_dto.UserInfoOutDto, error) {
 	user, err := user_domain.UserServices.CheckToken(tokenString)
-	return user, err
+	if err != nil {
+		return nil, err
+	}
+	assemblers := user_assemblers.UserInfoInAssemblers{}
+	userDto := assemblers.DoToDto(user)
+	return userDto, err
 }
