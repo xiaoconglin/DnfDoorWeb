@@ -1,16 +1,13 @@
 package user_token
 
 import (
-	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 )
 
 // 一些常量
 var (
-	TokenInvalid     error  = errors.New("token 非法")
-	TokenCreateError error  = errors.New("创建 token 失败")
-	keyString        string = "lxc"
+	keyString string = "lxc"
 )
 
 type JWT struct {
@@ -42,36 +39,33 @@ func (j *JWT) ParseToken(tokenString string) (*CustomClaims, error) {
 	if err != nil {
 		if ve, ok := err.(*jwt.ValidationError); ok {
 			if ve.Errors&jwt.ValidationErrorMalformed != 0 {
-				return nil, errors.New("that's not even a token")
+				return nil, TokenHandleError("that's not even a token")
 			} else if ve.Errors&jwt.ValidationErrorExpired != 0 {
-				return nil, errors.New("token is expired")
+				return nil, TokenExpiredError()
 			} else if ve.Errors&jwt.ValidationErrorNotValidYet != 0 {
-				return nil, errors.New("token not active yet")
+				return nil, TokenHandleError("token not active yet")
 			} else {
-				return nil, errors.New("couldn't handle this token")
+				return nil, TokenHandleError("couldn't handle this token")
 			}
 		}
 	}
 	if claims, ok := token.Claims.(*CustomClaims); ok && token.Valid {
 		return claims, nil
 	}
-	return nil, errors.New("couldn't handle this token")
+	return nil, TokenHandleError("couldn't handle this token")
 }
 
 func GenerateToken(claims CustomClaims) (string, error) {
 	j := &JWT{[]byte(keyString)}
 	token, err := j.CreateToken(claims)
 	if err != nil {
-		return "", TokenCreateError
+		return "", TokenCreateError()
 	}
 	return token, nil
 }
 
 func CheckToken(tokenString string) (*CustomClaims, error) {
 	j := &JWT{[]byte(keyString)}
-	claims, err := j.ParseToken(tokenString)
-	if err != nil {
-		return claims, TokenInvalid
-	}
-	return claims, nil
+	return j.ParseToken(tokenString)
+
 }

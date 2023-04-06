@@ -1,4 +1,4 @@
-package http
+package http_apis
 
 type method struct {
 	GET  string
