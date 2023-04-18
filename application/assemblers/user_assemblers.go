@@ -1,4 +1,4 @@
-package user_assemblers
+package application_assemblers
 
 import (
 	user_dto "myweb/apis/dto"

@@ -1,4 +1,4 @@
-package user_application
+package application_services
 
 import (
 	user_dto "myweb/apis/dto"

@@ -2,27 +2,27 @@ package outer_http
 
 import (
 	"github.com/gin-gonic/gin"
-	user_dto "myweb/apis/dto"
+	"myweb/apis/dto"
 	"myweb/apis/http_apis"
-	user_application "myweb/application/services"
+	application_services "myweb/application/services"
 )
 
 func ApiGetUserInfo(c *gin.Context) {
-	var inDto user_dto.UserInfoInDto
+	var inDto dto.UserInfoInDto
 	if err := c.ShouldBindQuery(&inDto); err != nil {
 		return
 	}
-	user := user_application.GetUserInfo(inDto.UserId)
+	user := application_services.GetUserInfo(inDto.UserId)
 	http_apis.SuccessJsonRespond(c, user)
 	return
 }
 
 func ApiCheckToken(c *gin.Context) {
-	var inDto user_dto.ApiCheckInfoInDto
+	var inDto dto.ApiCheckInfoInDto
 	if err := c.ShouldBindQuery(&inDto); err != nil {
 		return
 	}
-	user, err := user_application.CheckToken(inDto.Token)
+	user, err := application_services.CheckToken(inDto.Token)
 	if err != nil {
 		http_apis.FailJsonRespond(c, err)
 		return
@@ -32,11 +32,11 @@ func ApiCheckToken(c *gin.Context) {
 }
 
 func ApiUserLogin(c *gin.Context) {
-	var inDto user_dto.LoginInDto
+	var inDto dto.LoginInDto
 	if err := c.BindJSON(&inDto); err != nil {
 		return
 	}
-	outDto, err := user_application.UserLogin(&inDto)
+	outDto, err := application_services.UserLogin(&inDto)
 	if err != nil {
 		http_apis.FailJsonRespond(c, err)
 		return

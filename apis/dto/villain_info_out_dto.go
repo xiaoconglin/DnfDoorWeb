@@ -1,8 +1,9 @@
-package mysql_model
+package dto
 
 import "time"
 
-type ServerVillainRePo struct {
+type VillainInfoOutDto struct {
+	OutDto
 	ID             uint      `json:"id"`
 	Regional       string    `json:"regional"`
 	Server         string    `json:"server"`

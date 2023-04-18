@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-type UserInfoPo struct {
+type UserInfoRePo struct {
 	ID             uint      `json:"id"`
 	UserName       string    `json:"user_name"`
 	Password       string    `json:"password"`
@@ -13,6 +13,6 @@ type UserInfoPo struct {
 	UpdateDatetime time.Time `json:"update_time"`
 }
 
-func (UserInfoPo) TableName() string {
+func (UserInfoRePo) TableName() string {
 	return "user_info"
 }

@@ -15,22 +15,23 @@ var UserServices userServices
 
 func (item *userServices) GetById(id uint) (userDo *user_entities.UserInfoDo) {
 	do := user_entities.UserInfoDo{}
-	userDo = do.GetById(id)
-	return
+	do.GetById(id)
+	return &do
 }
+
 func (item *userServices) CheckToken(tokenString string) (*user_entities.UserInfoDo, error) {
 	claims, tokenErr := user_token.CheckToken(tokenString)
 	if tokenErr != nil {
 		return nil, tokenErr
 	}
 	do := user_entities.UserInfoDo{}
-	userDo := do.GetById(claims.ID)
-	return userDo, nil
+	do.GetById(claims.ID)
+	return &do, nil
 }
 
 func (item *userServices) Login(query user_query.LoginInQuery) (interface{}, error) {
-	mapper := user_entities.UserInfoDoMapper{}
-	userInfo, err := mapper.First(map[string]interface{}{"user_name": query.Username, "password": query.Password})
+	userDo := user_entities.UserInfoDo{}
+	userInfo, err := userDo.First(map[string]interface{}{"user_name": query.Username, "password": query.Password})
 	if err != nil {
 		return nil, err
 	}

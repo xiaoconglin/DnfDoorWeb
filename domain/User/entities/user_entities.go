@@ -9,7 +9,7 @@ import (
 type UserInfoDoMapper struct {
 }
 
-func (item UserInfoDoMapper) PoToDo(po *mysql_model.UserInfoPo, do *UserInfoDo) {
+func (item *UserInfoDoMapper) PoToDo(po *mysql_model.UserInfoRePo, do *UserInfoDo) {
 	do.ID = po.ID
 	do.UserName = po.UserName
 	do.Password = po.Password
@@ -18,21 +18,21 @@ func (item UserInfoDoMapper) PoToDo(po *mysql_model.UserInfoPo, do *UserInfoDo) 
 	do.UpdateDatetime = po.UpdateDatetime
 	return
 }
-func (item UserInfoDoMapper) GetById(id uint) (user mysql_model.UserInfoPo) {
+func (item *UserInfoDoMapper) GetById(id uint) (user mysql_model.UserInfoRePo) {
 	mysql_gorm.Db.First(&user, id)
 	return
 }
 
-func (item UserInfoDoMapper) Find(condition map[string]interface{}) *[]mysql_model.UserInfoPo {
-	var users []mysql_model.UserInfoPo
+func (item *UserInfoDoMapper) Find(condition map[string]interface{}) *[]mysql_model.UserInfoRePo {
+	var users []mysql_model.UserInfoRePo
 	err := mysql_gorm.Db.Where(condition).Find(&users)
 	if err != nil {
 		return nil
 	}
 	return &users
 }
-func (item UserInfoDoMapper) First(condition map[string]interface{}) (*mysql_model.UserInfoPo, error) {
-	var user mysql_model.UserInfoPo
+func (item *UserInfoDoMapper) First(condition map[string]interface{}) (*mysql_model.UserInfoRePo, error) {
+	var user mysql_model.UserInfoRePo
 	err := mysql_gorm.Db.Where(condition).First(&user).Error
 	if err != nil {
 		return nil, err
@@ -50,8 +50,17 @@ type UserInfoDo struct {
 	mapper         UserInfoDoMapper
 }
 
-func (item UserInfoDo) GetById(id uint) *UserInfoDo {
+func (item *UserInfoDo) GetById(id uint) {
 	userPo := item.mapper.GetById(id)
-	item.mapper.PoToDo(&userPo, &item)
-	return &item
+	item.mapper.PoToDo(&userPo, item)
+	return
+}
+
+func (item *UserInfoDo) First(condition map[string]interface{}) (*UserInfoDo, error) {
+	userPo, err := item.mapper.First(condition)
+	if err != nil {
+		return nil, err
+	}
+	item.mapper.PoToDo(userPo, item)
+	return item, nil
 }
